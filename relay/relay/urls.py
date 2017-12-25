@@ -15,7 +15,10 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-
+from mainapp.views import compiler, runcode, savecode
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^$', compiler, name='home'),
+    url(r'^ajax/runcode/', runcode, name='runcode'),
+    url(r'^ajax/savecode/', savecode, name='savecode')
 ]
