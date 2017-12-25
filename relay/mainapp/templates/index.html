@@ -73,7 +73,7 @@ $(document).ready(function(){
         dataType: 'json',
         success: function (data) {
             console.log(data.output);
-
+            outputEditor.setValue(data.output);
             document.getElementById("abc").innerHTML = data.output;
           
         }
@@ -83,6 +83,32 @@ $(document).ready(function(){
   });
 
 </script>
+
+<script>
+$(document).ready(function(){
+
+  $("#saveBtn").click(function(e) {
+    $.ajax({
+        url: '/ajax/savecode/',
+        data: {
+          'code': sourceEditor.getValue(),
+          'lang': $("#selectLanguageBtn").val(),
+        },
+        dataType: 'json',
+        success: function (data) {
+            console.log(data);
+                sourceEditor.setValue(data.code);
+
+        }
+      });
+
+
+  });
+  });
+
+</script>
+
+
 <body>
   <nav class="navbar navbar-default navbar-static-top">
     <div class="container-fluid">

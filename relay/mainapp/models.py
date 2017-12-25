@@ -28,9 +28,9 @@ class Question(models.Model):
 class Code(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-    code = RichTextField()
+    code = models.TextField(max_length=2000)
     lang = models.IntegerField(default=1)
 
     def __str__(self):
-        return self.user + "-" + self.lang
+        return self.user.ip + "-" + str(self.lang)
 

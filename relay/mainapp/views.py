@@ -4,6 +4,7 @@ from django.http import HttpResponse, Http404, HttpResponseRedirect,JsonResponse
 import requests, json
 import time
 from .models import *
+import html
 # Create your views here.
 
 def runcode(request):
@@ -14,9 +15,6 @@ def runcode(request):
     lc = str(langcode[lang])
     t = str([str(input)])
     print(code)
-    print([str(input)])
-    print(langcode[lang])
-    print(t)
     start_time = time.time()
     d = {'source': code, 'lang': lc, 'testcases': t,
          'api_key': 'hackerrank|2189697-2296|d21998aae507a388dd24d947e5c07073f8af7e44'}
@@ -32,10 +30,25 @@ def runcode(request):
     else:
         data['output'] = abc["result"]["stderr"]
     print(data)
+    abc = Code(question=Question.objects.get(pk=1), code=code, lang=int(lc), user=UserProfile.objects.get(pk=1))
+    abc.save()
     return JsonResponse(data)
 
 
-
+def savecode(request):
+    code = request.GET.get('code', None)
+    lang = request.GET.get('lang', None)
+    langcode = {'4':1, '10':2, '26':3, '36':5, '35':30}
+    lc = str(langcode[lang])
+    print(code)
+    c = Code.objects.get(pk=1)
+    print(c.code)
+    data = {
+        'code': c.code,
+        'lang': c.lang
+    }
+    print(data)
+    return JsonResponse(data)
 
 
 def compiler(request):

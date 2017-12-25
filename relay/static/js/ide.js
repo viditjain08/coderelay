@@ -294,9 +294,7 @@ $(document).ready(function() {
 
 
   CodeMirror.commands.save = function(){ save(); };
-  $saveBtn.click(function(e) {
-    save();
-  });
+
 
   $vimCheckBox.change(function() {
     toggleVim();
