@@ -1,0 +1,73 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Register</title>
+</head>
+<script>
+$(document).ready(function(){
+
+  $("#registersubmit").click(function(e) {
+  	  	console.log("vidit");
+
+  	event.preventDefault();
+    $.ajax({
+        url: '/ajax/register/',
+        data: {
+          'teamname': $('#id_teamname').val(),
+          	'password1': $('#id_password1').val(),
+          	'password2': $('#id_password2').val(),
+          	'id': $('#id_id').val(),
+        },
+        dataType: 'json',
+        success: function (data) {
+            console.log(data);
+               
+        }
+      });
+
+
+  });
+  });
+
+</script>
+<!--<script>
+$(document).ready(function(){
+
+  	$("#registersubmit").click(function(event) {
+		event.preventDefault();
+		console.log("vidit");
+    	$.ajax({
+        	url: '/ajax/register/',
+        	data: {
+          	'teamname': $('#id_teamname').val(),
+          	'password1': $('#id_password1').val(),
+          	'password2': $('#id_password2').val(),
+          	'id': $('#id_id').val(),
+
+        	},
+        	dataType: 'json',
+
+        	success: function (data) {
+            	console.log(data);
+            	document.getElementById("errors").innerHTML = data.error
+        	}
+      	});
+
+  	});
+  });
+
+-->
+<body>
+<h1>Register</h1>
+
+<div id="errors"></div>
+
+<form action="" method="post" id="registerform">
+	{% csrf_token %}
+        <input type="submit" value="Submit" id="registersubmit">
+</form>
+</body>
+
+</html>
+
