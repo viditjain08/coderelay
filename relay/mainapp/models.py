@@ -17,6 +17,15 @@ class UserProfile(models.Model):
     def __str__(self):
         return self.teamname + "-" + self.idno
 
+class Team(models.Model):
+    user1 = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='user1')
+    user2 = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='user2', blank=True, null=True)
+    time = models.IntegerField(default=0)
+    enable = models.BooleanField(default=True)
+    question = models.CharField(max_length=10,default="0000")
+    def __str__(self):
+        return self.user1.teamname
+
 
 class Question(models.Model):
     question_text = RichTextField()

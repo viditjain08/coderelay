@@ -23,20 +23,9 @@
   <script src="{% static 'js/codemirror.js' %}"></script>
   <script src="{% static 'js/mode/simple.js' %}"></script>
   <script src="{% static 'js/mode/clike.js' %}"></script>
-  <script src="{% static 'js/mode/clojure.js' %}"></script>
-  <script src="{% static 'js/mode/crystal.js' %}"></script>
-  <script src="{% static 'js/mode/elixir.js' %}"></script>
-  <script src="{% static 'js/mode/erlang.js' %}"></script>
-  <script src="{% static 'js/mode/go.js' %}"></script>
-  <script src="{% static 'js/mode/haskell.js' %}"></script>
-  <script src="{% static 'js/mode/javascript.js' %}"></script>
-  <script src="{% static 'js/mode/mllike.js' %}"></script>
-  <script src="{% static 'js/mode/octave.js' %}"></script>
-  <script src="{% static 'js/mode/pascal.js' %}"></script>
+
   <script src="{% static 'js/mode/python.js' %}"></script>
-  <script src="{% static 'js/mode/ruby.js' %}"></script>
-  <script src="{% static 'js/mode/rust.js' %}"></script>
-  <script src="{% static 'js/mode/shell.js' %}"></script>
+
 
   <script src="{% static 'js/download.js' %}"></script>
 
@@ -138,7 +127,7 @@ function exitHandler()
     {
         console.log(flag);
         if(flag==1) {
-        	window.location = "/register";
+        	window.location = "/logout";
         }
         flag=1;
 
@@ -200,7 +189,7 @@ document.addEventListener("msfullscreenchange", function(e) {
 </script>
 <body id="bd">
     <button onclick="launchFullscreen(document.documentElement);" id="abcd">Launch Fullscreen</button>
-    <a href="/register">vidit</a>
+    {{time}}
   <nav class="navbar navbar-default navbar-static-top">
     <div class="container-fluid">
       <div class="navbar-header">

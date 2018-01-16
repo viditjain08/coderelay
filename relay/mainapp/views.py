@@ -1,9 +1,11 @@
+from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404, HttpResponseRedirect, JsonResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login as authlogin, logout as authlogout
 from ipware.ip import get_ip
-
+from django.contrib.auth.decorators import login_required
+from random import randint
 import requests, json
 import time
 from.forms import registerform, loginform
@@ -14,6 +16,8 @@ import html
 
 def ajaxregister(request):
     print("vidit")
+    error = ''
+    success = False
     up = UserProfile.objects.filter(ip=get_ip(request))
     if up.exists()==False:
         print("reached0")
@@ -40,6 +44,13 @@ def ajaxregister(request):
                             u2.save()
                             u3 = UserProfile(user=u2, teamname=formdata['teamname'], idno=formdata['id'], ip=get_ip(request))
                             u3.save()
+                            try:
+                                t = Team.objects.get(user1=u)
+                                t.user2 = u3
+                                t.save()
+                                success = True
+                            except:
+                                error = "Something went wrong"
                         else:
                             error = "Password does not match with your teammate"
                     else:
@@ -48,16 +59,19 @@ def ajaxregister(request):
                         u2.save()
                         u3 = UserProfile(user=u2, teamname=formdata['teamname'], idno=formdata['id'], ip=get_ip(request))
                         u3.save()
+                        t = Team(user1=u3)
+                        t.save()
+                        success = True
 
             else:
                 pass
-            data = {'error': error}
+            data = {'error': error, 'success': success}
             print(data)
             return JsonResponse(data)
         else:
-            return JsonResponse({'error': "Something went wrong"})
+            return JsonResponse({'error': "Something went wrong", 'success': success})
     else:
-        return JsonResponse({'error': "This PC is already registered"})
+        return JsonResponse({'error': "This PC is already registered", 'success': success})
 
 
 def register(request):
@@ -77,6 +91,13 @@ def ajaxlogin(request):
     error = ''
     up = UserProfile.objects.filter(ip=get_ip(request))
     print(get_ip(request))
+    try:
+        t = Team.objects.get(Q(user1=up)|Q(user2=up))
+        if t.user2 is None:
+            error = "Your teammate hasn't registered"
+            return JsonResponse({'error': error, 'success': success})
+    except:
+        error = "Something happened"
     if up.exists()==True:
         print("reached0")
         form = loginform(request.POST)
@@ -96,7 +117,17 @@ def ajaxlogin(request):
                     user = authenticate(username=username, password=password)
                     if user is not None:
                         authlogin(request, user)
-                        success = True
+                        try:
+                            u1 = UserProfile.objects.get(user=user)
+                            t = Team.objects.filter(Q(user1=u1) | Q(user2=u1))[0]
+                            if t.time<time.time():
+                                t.time = time.time()+randint(900,1200)
+                                t.save()
+                            success = True
+                        except:
+                            error = "Something went wrong"
+                            
+
                     else:
                         error = "Invalid Password"
 
@@ -106,9 +137,9 @@ def ajaxlogin(request):
             print(data)
             return JsonResponse(data)
         else:
-            return Http404("Something went wrong")
+            return JsonResponse({'error': "Something went wrong"})
     else:
-        return HttpResponse("This PC is not registered")
+        return JsonResponse({'error': "This PC is not registered"})
 
 
 def logout(request):
@@ -153,7 +184,19 @@ def savecode(request):
     }
     return JsonResponse(data)
 
+def swapcode(request):
+    code = request.GET.get('code', None)
+    lang = request.GET.get('lang', None)
+    langcode = {'4':1, '10':2, '26':3, '36':5, '35':30}
+    lc = str(langcode[lang])
+    c = Code.objects.get(pk=1)
+    data = {
+        'code': c.code,
+        'lang': c.lang
+    }
+    return JsonResponse(data)
 
+@login_required(login_url='/login')
 def compiler(request):
     #start_time = time.time()
     #d = {'source':'print raw_input()', 'lang':'2', 'testcases':'["2"]','api_key':'hackerrank|2189697-2296|d21998aae507a388dd24d947e5c07073f8af7e44'}
@@ -167,4 +210,7 @@ def compiler(request):
             return HttpResponse("Something went wrong")
     except:
         return HttpResponse("Something went wrong")
-    return render(request, "index.html")
+    u = UserProfile.objects.get(user=request.user)
+    t = Team.objects.get(Q(user1=u) | Q(user2=u))
+    l = [int(x) for x in t.question]
+    return render(request, "index.html",{'time':t.time-time.time()})

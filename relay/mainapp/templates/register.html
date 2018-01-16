@@ -32,6 +32,9 @@ $(document).ready(function(){
         success: function (data) {
             console.log(data.error);
             document.getElementById("errors").innerHTML = data.error;
+            if(data.success) {
+              window.location = "/login";
+            } 
           
         }
       });
