@@ -1,11 +1,12 @@
-from django.shortcuts import render
-from django.http import HttpResponse, Http404, HttpResponseRedirect,JsonResponse
+from django.shortcuts import render, redirect
+from django.http import HttpResponse, Http404, HttpResponseRedirect, JsonResponse
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login as authlogin, logout as authlogout
 from ipware.ip import get_ip
+
 import requests, json
 import time
-from.forms import registerform
+from.forms import registerform, loginform
 from .models import *
 import html
 # Create your views here.
@@ -13,7 +14,7 @@ import html
 
 def ajaxregister(request):
     print("vidit")
-    up = UserProfile.objects.filter(ip=get_ip)
+    up = UserProfile.objects.filter(ip=get_ip(request))
     if up.exists()==False:
         print("reached0")
         form = registerform(request.POST)
@@ -34,30 +35,85 @@ def ajaxregister(request):
                         u1 = u[0].idno
                         user = authenticate(username=u1, password=formdata['password1'])
                         if user is not None:
-                            u2 = User(username=formdata['id'], password=formdata['password1'])
+                            u2 = User(username=formdata['id'])
+                            u2.set_password(formdata['password1'])
                             u2.save()
                             u3 = UserProfile(user=u2, teamname=formdata['teamname'], idno=formdata['id'], ip=get_ip(request))
                             u3.save()
                         else:
                             error = "Password does not match with your teammate"
                     else:
-                        u2 = User(username=formdata['id'], password=formdata['password1'])
+                        u2 = User(username=formdata['id'])
+                        u2.set_password(formdata['password1'])
                         u2.save()
                         u3 = UserProfile(user=u2, teamname=formdata['teamname'], idno=formdata['id'], ip=get_ip(request))
                         u3.save()
+
             else:
                 pass
             data = {'error': error}
             print(data)
             return JsonResponse(data)
         else:
-            return Http404("Something went wrong")
+            return JsonResponse({'error': "Something went wrong"})
     else:
-        return HttpResponse("This PC is already registered")
+        return JsonResponse({'error': "This PC is already registered"})
 
 
 def register(request):
     return render(request, "register.html", {'form':registerform})
+
+def login(request):
+    if request.user.is_authenticated:
+        #If user logged in, redirect to home page
+        return HttpResponseRedirect('/')
+    return render(request, "login.html", {'form':loginform})
+
+
+def ajaxlogin(request):
+    print("vidit")
+    print(request.POST)
+    success = False
+    error = ''
+    up = UserProfile.objects.filter(ip=get_ip(request))
+    print(get_ip(request))
+    if up.exists()==True:
+        print("reached0")
+        form = loginform(request.POST)
+        print(form)
+        if request.method== 'POST':
+            if form.is_valid():
+                formdata=form.cleaned_data
+                print(formdata)
+                username = formdata['id']
+                password = formdata['password']
+                u = User.objects.filter(username=formdata['id'])
+                if u.count()>0 and u[0]!=up[0].user:
+                    error = "ID registered from other pc"
+                elif u.count()==0:
+                    error = "ID not registered"
+                else:
+                    user = authenticate(username=username, password=password)
+                    if user is not None:
+                        authlogin(request, user)
+                        success = True
+                    else:
+                        error = "Invalid Password"
+
+            else:
+                error = "Invalid ID"
+            data = {'error': error, 'success': success}
+            print(data)
+            return JsonResponse(data)
+        else:
+            return Http404("Something went wrong")
+    else:
+        return HttpResponse("This PC is not registered")
+
+
+def logout(request):
+    authlogout(request)
+    return HttpResponseRedirect('/login')
 
 
 def runcode(request):
@@ -105,4 +161,10 @@ def compiler(request):
     #r = requests.post('http://api.hackerrank.com/checker/submission.json', data = d)
     #print(json.loads(r.text)["result"]["stdout"])
     #print("--- %s seconds ---" % (time.time() - start_time))
+    try:
+        g = GameSwitch.objects.get(pk=1)
+        if g.game_active==0:
+            return HttpResponse("Something went wrong")
+    except:
+        return HttpResponse("Something went wrong")
     return render(request, "index.html")

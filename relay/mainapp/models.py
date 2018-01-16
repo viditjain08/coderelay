@@ -34,3 +34,9 @@ class Code(models.Model):
     def __str__(self):
         return self.user.ip + "-" + str(self.lang)
 
+class GameSwitch(models.Model):
+    name=models.CharField(null=False,max_length=10)
+    game_active = models.IntegerField(null=False, choices=((0,'0'),(1,'1')),default = 0)
+
+    def __str__(self):
+        return self.name

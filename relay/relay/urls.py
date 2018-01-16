@@ -15,12 +15,15 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from mainapp.views import compiler, runcode, savecode, register, ajaxregister
+from mainapp.views import compiler, runcode, savecode, register, ajaxregister, login, ajaxlogin, logout
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^register$', register, name='register'),
     url(r'^ajax/register/$', ajaxregister, name='ajaxregister'),
+    url(r'^login$', login, name='login'),
+    url(r'^ajax/login/$', ajaxlogin, name='ajaxlogin'),
     url(r'^$', compiler, name='home'),
+    url(r'^logout/$', logout, name='logout'),
     url(r'^ajax/runcode/', runcode, name='runcode'),
     url(r'^ajax/savecode/', savecode, name='savecode')
 ]

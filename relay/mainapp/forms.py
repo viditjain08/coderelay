@@ -10,4 +10,7 @@ class registerform(forms.Form):
 		validators.RegexValidator(re.compile('^201[0-9]{1}[0-9A-Z]{4}[0-9]{4}P'),message='BITS ID of teammate 1 is empty or invalid',code='invalid!')])
 
 
-
+class loginform(forms.Form):
+	password = forms.CharField(widget=forms.PasswordInput(),max_length=20)
+	id = forms.CharField(max_length=20,validators=[\
+		validators.RegexValidator(re.compile('^201[0-9]{1}[0-9A-Z]{4}[0-9]{4}P'),message='BITS ID of teammate 1 is empty or invalid',code='invalid!')])
