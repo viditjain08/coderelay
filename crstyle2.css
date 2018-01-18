@@ -1,0 +1,31 @@
+div#title
+{
+	font-family:Montserrat;
+	 font-weight: 900;
+text-shadow: 1px 0 #888888;
+letter-spacing:1px;
+}
+body{
+	background: linear-gradient(#00BCD4,#4DD0E1);
+		font-family:Montserrat;
+}
+div#mark
+{
+	font-family:Montserrat;
+	color:white;
+	text-align:center;
+	font-size:100%;
+	 font-weight: 900;
+}
+p.para{
+	margin-left:24%;
+	border-color:#f1f3f1;
+	border-style:solid;
+	text-align:left;
+	width:50%;
+	font-size:130%;
+	font-weight:100;
+	border-width:3px;
+	padding:20px;
+	border-radius:25px;
+}
