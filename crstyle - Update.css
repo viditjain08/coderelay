@@ -63,6 +63,15 @@ background-color:#FF6D00;
 border-color:#FF6D00;
 color:#f1f3f1;
 }
+#button4{
+background-color:#FF6D00;
+border-color:#FF6D00;
+color:#f1f3f1;
+}
+#head
+{
+	margin-top:-4%;
+}
 button_class:hover {
 transform: skew(-10deg);
 }
