@@ -1,0 +1,58 @@
+{% load static %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="{% static 'js/jquery.min.js' %}"></script>
+  <title>Register</title>
+</head>
+
+
+<script>
+$(document).ready(function(){
+	console.log("vidit");
+  $("#registerform").submit(function(event) {
+  	event.preventDefault();
+  	console.log("a");
+    $.ajax({
+        url: '/ajax/register/',
+        data: {
+          	'teamname': $('#id_teamname').val(),
+          	'password1': $('#id_password1').val(),
+          	'password2': $('#id_password2').val(),
+          	'id': $('#id_id').val(),
+        	csrfmiddlewaretoken: '{{ csrf_token }}'
+
+        	},
+        dataType: 'json',
+		type:      'POST',        // 'get' or 'post', override for form's 'method' attribute
+
+        success: function (data) {
+            console.log(data.error);
+            document.getElementById("errors").innerHTML = data.error;
+          
+        }
+      });
+  });
+
+  });
+
+</script>
+
+
+
+<body>
+<h1>Register</h1>
+
+<div id="errors"></div>
+
+<form action="" method="post" id="registerform">
+{{form.as_p}}
+	{% csrf_token %}
+        <input type="submit" value="Submit" id="registersubmit">
+
+</form>
+</body>
+</html>
