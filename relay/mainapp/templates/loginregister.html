@@ -1,0 +1,135 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>CODERELAY</title>
+		<link type='text/css' rel='stylesheet' href="{% static 'css/loginregister/loginregister.css' %}"/>
+		<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Montserrat"/>
+		<script src="{% static 'js/loginregister/loginregister.js' %}"></script>
+		<script src="{% static 'js/jquery.min.js' %}"></script>
+
+
+
+
+	</head>
+	<body>
+
+<script>
+$(document).ready(function(){
+	console.log("vidit");
+  $("#registerform").submit(function(event) {
+  	event.preventDefault();
+  	console.log("a");
+    $.ajax({
+        url: '/ajax/register/',
+        data: {
+          	'teamname': $('#id_teamname').val(),
+          	'password1': $('#id_password1').val(),
+          	'name': $('#id_name').val(),
+          	'id': $('#id_id').val(),
+        	csrfmiddlewaretoken: '{{ csrf_token }}'
+
+        	},
+        dataType: 'json',
+		type:      'POST',        // 'get' or 'post', override for form's 'method' attribute
+
+        success: function (data) {
+            console.log(data.error);
+            document.getElementById("register_errors").innerHTML = data.error;
+
+            if(data.success) {
+              div_transition();
+            } 
+          
+        }
+      });
+  });
+
+  });
+
+</script>
+
+<script>
+$(document).ready(function(){
+	console.log("vidit");
+  $("#loginform").submit(function(event) {
+  	event.preventDefault();
+  	console.log("a");
+    $.ajax({
+        url: '/ajax/login/',
+        data: {
+        	csrfmiddlewaretoken: '{{ csrf_token }}',
+          	'password': $('#id_password').val(),
+          	'id': $('#id_id1').val(),
+
+        	},
+        dataType: 'json',
+		    type:      'POST',        // 'get' or 'post', override for form's 'method' attribute
+
+        success: function (data) {
+            console.log(data.error);
+            document.getElementById("login_errors").innerHTML = data.error;
+            if(data.success) {
+              window.location = "/game";
+            } 
+        }
+      });
+  });
+
+  });
+
+</script>
+
+
+	<input type="submit" id="button4" value=" Login "  class="button_class"  style="margin-top:3%; margin-left:90%;padding-left:20px;padding-right:20px;" onclick="div_transition()">
+			<div id='title'>
+				<h1 id="head"><span style="color:#f1f3f1">CODE</span><span style="color:#111">RELAY</span></h1>
+			</div>
+			<div id='tag'>
+				<p><i>Game that tests blah blah blah</i></p>
+			</div>
+
+			<form action="" method="post" id="registerform">
+
+			<div id="loginbox">
+			<div id="register_errors" style="margin-left: 30%"></div>
+  <div class="logindata" id="logindata1">
+    <input type="text" class="form-control" placeholder="Name" id="id_name">
+  </div>
+    <div class="logindata" id="logindata2">
+    <input type="text" class="form-control" placeholder="BITS ID" id="id_id">
+  </div>
+    <div class="logindata" id="logindata3">
+    <input type="text" class="form-control" placeholder="Team Name" id="id_teamname">
+  </div>
+<div class="logindata" id="logindata4">
+    <input type="password" class="form-control" placeholder="Password" id="id_password1">
+  </div>
+  	{% csrf_token %}
+
+   <input type="submit" id="register" value=" Register "  class="button_class">
+    <!--  <p class="register">Already Registered?</p><input type="submit" id="button4" value=" Login "  class="button_class"  style="margin-top:0%; margin-left:60%" onclick="">
+	--></div>
+	</form>
+
+	<form action="" method="post" id="loginform">
+	<div id="loginbox2">
+				<div id="login_errors" style="margin-left: 30%"></div>
+
+     <div class="logindata" id="logindata2">
+    <input type="text" class="form-control" placeholder="BITS ID" id="id_id1">
+  </div>
+  <div class="logindata" id="logindata4">
+    <input type="password" class="form-control" placeholder="Password" id="id_password">
+  </div>
+    	{% csrf_token %}
+
+   <input type="submit" id="login" value=" Get Started "  class="button_class">
+   </form>
+
+   <span><p class="register">Haven't Registered yet ?</p><input type="button" id="button3" value=" Register "  class="button_class" onclick="div_transition2();">
+	</div></span>
+	</body>
+	</html>
+	
+	

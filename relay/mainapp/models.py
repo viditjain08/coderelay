@@ -10,6 +10,7 @@ from django.core import validators
 class UserProfile(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE) #extending user model
     teamname = models.CharField(max_length=200)
+    name = models.CharField(max_length=50)
     idno = models.CharField(max_length=20,validators=[\
         validators.RegexValidator(re.compile('^201[0-9]{1}[0-9A-Z]{4}[0-9]{4}P$'),message='Enter your valid BITS-mail',code='invalid!')])
     ip = models.CharField(null=True,max_length=20)

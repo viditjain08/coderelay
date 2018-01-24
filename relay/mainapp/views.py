@@ -18,18 +18,23 @@ def ajaxregister(request):
     print("vidit")
     error = ''
     success = False
+    register_errors = []
     up = UserProfile.objects.filter(ip=get_ip(request))
     if up.exists()==False:
         print("reached0")
         form = registerform(request.POST)
-        print(form)
+        reg_errors=json.loads(json.dumps(form.errors))
+        for k,v in reg_errors.items():
+            if v==['This field is required.']:
+                register_errors.append("All fields are required")
+            else:
+                register_errors.append(v)
+            error = register_errors[0]
         if request.method== 'POST':
             if form.is_valid():
+                print("1")
                 formdata=form.cleaned_data
-                print(formdata)
-                if formdata['password1']!=formdata['password2']:
-                    error = "Passwords do no match"
-                elif User.objects.filter(username=formdata['id']).count()>0:
+                if User.objects.filter(username=formdata['id']).count()>0:
                     error = "ID already registered"
                 elif UserProfile.objects.filter(teamname=formdata['teamname']).count()>1:
                     error = "Teams cannot have more than 2 members"
@@ -42,7 +47,7 @@ def ajaxregister(request):
                             u2 = User(username=formdata['id'])
                             u2.set_password(formdata['password1'])
                             u2.save()
-                            u3 = UserProfile(user=u2, teamname=formdata['teamname'], idno=formdata['id'], ip=get_ip(request))
+                            u3 = UserProfile(user=u2, teamname=formdata['teamname'], name=formdata['name'], idno=formdata['id'], ip=get_ip(request))
                             u3.save()
                             try:
                                 t = Team.objects.get(user1=u)
@@ -57,7 +62,7 @@ def ajaxregister(request):
                         u2 = User(username=formdata['id'])
                         u2.set_password(formdata['password1'])
                         u2.save()
-                        u3 = UserProfile(user=u2, teamname=formdata['teamname'], idno=formdata['id'], ip=get_ip(request))
+                        u3 = UserProfile(user=u2, teamname=formdata['teamname'], name=formdata['name'], idno=formdata['id'], ip=get_ip(request))
                         u3.save()
                         t = Team(user1=u3)
                         t.save()
@@ -82,6 +87,12 @@ def login(request):
         #If user logged in, redirect to home page
         return HttpResponseRedirect('/')
     return render(request, "login.html", {'form':loginform})
+
+def loginregister(request):
+    if request.user.is_authenticated:
+        #If user logged in, redirect to game
+        return HttpResponseRedirect('/game')
+    return render(request, "loginregister.html", {'loginform':loginform, 'registerform':registerform})
 
 
 def ajaxlogin(request):
@@ -196,7 +207,11 @@ def swapcode(request):
     }
     return JsonResponse(data)
 
-@login_required(login_url='/login')
+def abcd(request):
+    return render(request, "compiler.html")
+
+
+@login_required(login_url='/')
 def compiler(request):
     #start_time = time.time()
     #d = {'source':'print raw_input()', 'lang':'2', 'testcases':'["2"]','api_key':'hackerrank|2189697-2296|d21998aae507a388dd24d947e5c07073f8af7e44'}
