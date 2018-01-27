@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from mainapp.views import compiler, runcode, savecode, register, ajaxregister, login, ajaxlogin, logout, loginregister, abcd
+from mainapp.views import *
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^register$', register, name='register'),
@@ -27,5 +27,8 @@ urlpatterns = [
     url(r'^game1$', abcd, name='game1'),
     url(r'^logout/$', logout, name='logout'),
     url(r'^ajax/runcode/', runcode, name='runcode'),
-    url(r'^ajax/savecode/', savecode, name='savecode')
+    url(r'^ajax/savecode/', savecode, name='savecode'),
+    url(r'^ajax/swapcode/', swapcode, name='swapcode'),
+    url(r'^ajax/submitques/', submitques, name='submitques'),
+    url(r'^ajax/finishrace/', finishrace, name='finishrace')
 ]

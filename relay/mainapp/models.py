@@ -18,15 +18,6 @@ class UserProfile(models.Model):
     def __str__(self):
         return self.teamname + "-" + self.idno
 
-class Team(models.Model):
-    user1 = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='user1')
-    user2 = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='user2', blank=True, null=True)
-    time = models.IntegerField(default=0)
-    enable = models.BooleanField(default=True)
-    question = models.CharField(max_length=10,default="0000")
-    def __str__(self):
-        return self.user1.teamname
-
 
 class Question(models.Model):
     question_text = RichTextField()
@@ -34,12 +25,25 @@ class Question(models.Model):
     def __str__(self):
         return "Question #" + str(self.pk)
 
+class Team(models.Model):
+    user1 = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='user1')
+    user2 = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='user2', blank=True, null=True)
+    time = models.IntegerField(default=0)
+    enable = models.BooleanField(default=True)
+    user1q = models.ForeignKey(Question, related_name='user1q', blank=True, null=True)
+    user2q = models.ForeignKey(Question, related_name='user2q', blank=True, null=True)
+    def __str__(self):
+        return self.user1.teamname
+
+
+
 
 class Code(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    team = models.ForeignKey(Team, on_delete=models.CASCADE)
     code = models.TextField(max_length=2000)
-    lang = models.IntegerField(default=1)
+    lang = models.IntegerField(default=4)
+    swap = models.BooleanField(default=False)
 
     def __str__(self):
         return self.user.ip + "-" + str(self.lang)

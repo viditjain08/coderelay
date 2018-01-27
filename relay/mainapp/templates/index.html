@@ -55,6 +55,53 @@
 
 <script>
 $(document).ready(function(){
+  if("{{code.code|escapejs}}"!="") {
+
+  sourceEditor.setValue("{{code.code|escapejs}}");
+  document.getElementById("selectLanguageBtn").value={{code.lang}};
+
+};
+
+var timex = Math.floor({{time}}-120-Date.parse(new Date())/1000);
+var timey = Math.floor({{time}}-Date.parse(new Date())/1000);
+console.log(timex);
+setTimeout(x, timex*1000);
+setTimeout(y, timey*1000);
+function y() {
+    document.getElementById("saveBtn").click();
+
+    $.ajax({
+        url: '/ajax/swapcode/',
+        data: {
+          'code': sourceEditor.getValue(),
+          'lang': $("#selectLanguageBtn").val(),
+        },
+        dataType: 'json',
+        success: function (data) {
+            if(data.finish) {
+              document.getElementById("finishRace").click();
+            }
+            //outputEditor.setValue(data.output);
+            document.getElementById("q").innerHTML = data.question;
+            sourceEditor.setValue(data.code);
+            $("#timer").hide();
+            document.getElementById("selectLanguageBtn").value=data.lang;
+            var timex1 = Math.floor(data.time-120-Date.parse(new Date())/1000);
+
+            var timey1 = Math.floor(data.time - Date.parse(new Date())/1000);
+            setTimeout(x, timex1*1000);
+
+            setTimeout(y, timey1*1000);
+
+          
+        }
+      });}
+function x() {
+var myVar = setInterval(myTimer, 1000);
+function myTimer() {
+    document.getElementById("timer").innerHTML = {{time}}-Date.parse(new Date())/1000;
+};
+};
 
   $("#runBtn").click(function(e) {
     $.ajax({
@@ -66,7 +113,11 @@ $(document).ready(function(){
         },
         dataType: 'json',
         success: function (data) {
+            if(data.finish) {
+              document.getElementById("finishRace").click();
+            }
             console.log(data.output);
+
             //outputEditor.setValue(data.output);
             document.getElementById("abc").innerHTML = data.output;
           
@@ -99,17 +150,65 @@ document.addEventListener('contextmenu', event => event.preventDefault());
         data: {
           'code': sourceEditor.getValue(),
           'lang': $("#selectLanguageBtn").val(),
+          'question': '{{qid}}',
         },
         dataType: 'json',
         success: function (data) {
+            if(data.finish) {
+              document.getElementById("finishRace").click();
+            }
             console.log(data);
-                sourceEditor.setValue(data.code);
 
         }
       });
 
 
   });
+
+  $("#submitBtn").click(function(e) {
+    $.ajax({
+        url: '/ajax/submitques/',
+        data: {
+          'code': sourceEditor.getValue(),
+          'lang': $("#selectLanguageBtn").val(),
+          'question': '{{qid}}',
+        },
+        dataType: 'json',
+        success: function (data) {
+            if(data.finish) {
+              document.getElementById("finishRace").click();
+            }
+            insertTemplate();
+            if(!data.done) {
+            document.getElementById("q").innerHTML = data.question;
+          }
+
+        }
+      });
+
+
+  });
+
+
+    $("#finishRace").click(function(e) {
+    $.ajax({
+        url: '/ajax/finishrace/',
+        data: {
+          'code': sourceEditor.getValue(),
+          'lang': $("#selectLanguageBtn").val(),
+        },
+        dataType: 'json',
+        success: function (data) {
+            window.location = "/logout";
+
+        }
+      });
+
+
+  });
+
+
+
   });
 
 var flag=0;
@@ -189,7 +288,7 @@ document.addEventListener("msfullscreenchange", function(e) {
 </script>
 <body id="bd">
     <button onclick="launchFullscreen(document.documentElement);" id="abcd">Launch Fullscreen</button>
-    {{time}}
+    <div id="timer"></div>
   <nav class="navbar navbar-default navbar-static-top">
     <div class="container-fluid">
       <div class="navbar-header">
@@ -219,6 +318,12 @@ document.addEventListener("msfullscreenchange", function(e) {
         <button class="btn btn-primary" id="saveBtn" data-loading-text="Saving...">
           <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Save (Ctrl+S)
         </button>
+        <button class="btn btn-success" id="submitBtn" data-loading-text="Running...">
+          <span class="glyphicon glyphicon-play" aria-hidden="true"></span> Submit Ques
+        </button>
+        <button class="btn btn-success" id="finishRace" data-loading-text="Running...">
+          <span class="glyphicon glyphicon-play" aria-hidden="true"></span> Finish
+        </button>
         <button class="btn btn-default" id="downloadSourceBtn" data-toggle="tooltip" data-placement="bottom" title="Download source">
           <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
         </button>
@@ -227,7 +332,8 @@ document.addEventListener("msfullscreenchange", function(e) {
       </div>
     </div>
   </nav>
-
+  <div id="q">{{code.question.question_text|safe}}</div>
+  {{code.code}}
   <div id="sourceEditor"></div>
 
   <div class="container-fluid">

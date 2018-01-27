@@ -132,7 +132,7 @@ def ajaxlogin(request):
                             u1 = UserProfile.objects.get(user=user)
                             t = Team.objects.filter(Q(user1=u1) | Q(user2=u1))[0]
                             if t.time<time.time():
-                                t.time = time.time()+randint(900,1200)
+                                t.time = time.time()+randint(300,400)
                                 t.save()
                             success = True
                         except:
@@ -163,6 +163,10 @@ def runcode(request):
     input = request.GET.get('input', None)
     lang = request.GET.get('lang', None)
     langcode = {'4':1, '10':2, '26':3, '36':5, '35':30}
+    u = UserProfile.objects.get(user=request.user)
+    t = Team.objects.get(Q(user1=u) | Q(user2=u))
+    if t.enable==False:
+        return JsonResponse({'finish': True})
     lc = str(langcode[lang])
     t = str([str(input)])
     start_time = time.time()
@@ -183,29 +187,122 @@ def runcode(request):
     return JsonResponse(data)
 
 
+def swapcode(request):
+    u = UserProfile.objects.get(user=request.user)
+    t = Team.objects.get(Q(user1=u) | Q(user2=u))
+    if t.enable==False:
+        return JsonResponse({'finish': True})
+    if t.user1q is None or t.user2q is None:
+        return JsonResponse({'finish': True})
+    if t.user1==u:
+        c1 = Code.objects.get(team=t,question=t.user1q)
+        c1.swap=True
+        c1.save()
+        c2 = Code.objects.get(team=t,question=t.user2q)
+        while c2.swap==False:
+            c2 = Code.objects.get(team=t,question=t.user2q)
+        t.user2q = t.user1q
+        c2.swap = False
+        c2.save()
+        t.save()
+    else:
+        c1 = Code.objects.get(team=t,question=t.user2q)
+        c1.swap=True
+        c1.save()
+        c2 = Code.objects.get(team=t,question=t.user1q)
+        while c2.swap==False:
+            c2 = Code.objects.get(team=t,question=t.user1q)
+        t.user1q = t.user2q
+        c2.swap = False
+        c2.save()
+        t.time = time.time()+randint(300,400)
+        t.save()
+    return JsonResponse({'question': c2.question.question_text, 'code': c2.code, 'lang': c2.lang, 'time': t.time})
+
 def savecode(request):
     code = request.GET.get('code', None)
     lang = request.GET.get('lang', None)
-    langcode = {'4':1, '10':2, '26':3, '36':5, '35':30}
-    lc = str(langcode[lang])
-    c = Code.objects.get(pk=1)
-    data = {
-        'code': c.code,
-        'lang': c.lang
-    }
-    return JsonResponse(data)
+    u = UserProfile.objects.get(user=request.user)
+    t = Team.objects.get(Q(user1=u) | Q(user2=u))
+    if t.enable==False:
+        return JsonResponse({'finish': True})
 
-def swapcode(request):
+    if t.user1==u:
+        q = t.user1q
+    else:
+        q = t.user2q
+    try:
+        cd = Code.objects.get(team=t,question=q)
+        cd.code=code
+        cd.lang=int(lang)
+        cd.save()
+    except:
+        cd = Code(team=t, question=q, code=code, lang=int(lang))
+        cd.save()
+    return JsonResponse({})
+
+
+def finishrace(request):
     code = request.GET.get('code', None)
     lang = request.GET.get('lang', None)
-    langcode = {'4':1, '10':2, '26':3, '36':5, '35':30}
-    lc = str(langcode[lang])
-    c = Code.objects.get(pk=1)
-    data = {
-        'code': c.code,
-        'lang': c.lang
-    }
-    return JsonResponse(data)
+    u = UserProfile.objects.get(user=request.user)
+    t = Team.objects.get(Q(user1=u) | Q(user2=u))
+    ques_list = Question.objects.all()
+    t.enable=False
+    t.save()
+    if t.user1==u:
+        q = t.user1q
+    else:
+        q = t.user2q
+    try:
+        cd = Code.objects.get(team=t,question=q)
+        cd.code=code
+        cd.lang=int(lang)
+        cd.save()
+    except:
+        cd = Code(team=t, question=q, code=code, lang=int(lang))
+        cd.save()
+    return JsonResponse({'finish':True})
+
+def submitques(request):
+    code = request.GET.get('code', None)
+    lang = request.GET.get('lang', None)
+    ques_list = Question.objects.all()
+    u = UserProfile.objects.get(user=request.user)
+    t = Team.objects.get(Q(user1=u) | Q(user2=u))
+    if t.enable==False:
+        print("vidit")
+        return JsonResponse({'finish': True})
+    print(t)
+    if t.user1==u:
+        q = t.user1q
+        print("1")
+    else:
+        q = t.user2q
+        print("2")
+
+    try:
+        cd = Code.objects.get(team=t,question=q)
+        cd.code=code
+        cd.lang=int(lang)
+        cd.save()
+        print("3")
+    except:
+        cd = Code(team=t, question=q, code=code, lang=int(lang))
+        cd.save()
+    qlist = [x for x in ques_list]
+    try:
+
+        if t.user1==u:
+            x = t.user1q = ques_list[max(qlist.index(t.user1q),qlist.index(t.user2q))+1]
+        else:
+            x = t.user2q = ques_list[max(qlist.index(t.user1q),qlist.index(t.user2q))+1]
+        t.save()
+    except:
+        return JsonResponse({'question': cd.question.question_text, 'done': True})               
+    return JsonResponse({'question': x.question_text})
+
+
 
 def abcd(request):
     return render(request, "compiler.html")
@@ -227,5 +324,32 @@ def compiler(request):
         return HttpResponse("Something went wrong")
     u = UserProfile.objects.get(user=request.user)
     t = Team.objects.get(Q(user1=u) | Q(user2=u))
-    l = [int(x) for x in t.question]
-    return render(request, "index.html",{'time':t.time-time.time()})
+    if t.enable==False:
+        authlogout(request)
+        return HttpResponseRedirect('/') 
+
+    ques_list = Question.objects.all()
+    if t.user1==u:
+        q = t.user1q
+        if q is None:
+            code = Code(question=ques_list[0], team=t)
+            t.user1q=ques_list[0]
+            t.save()
+        else:
+            try:
+                code = Code.objects.get(question=q,team=t)
+            except:
+                code = Code(question=q, team=t)
+    else:
+        q = t.user2q
+        if q is None:
+            code = Code(question=ques_list[1], team=t)
+            t.user2q=ques_list[1]
+            t.save()
+        else:
+            try:
+                code = Code.objects.get(question=q,team=t)
+            except:
+                code = Code(question=q, team=t)
+    print(code.code)
+    return render(request, "index.html",{'time':t.time, 'code': code})
