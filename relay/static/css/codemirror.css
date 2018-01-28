@@ -1,4 +1,42 @@
 /* BASICS */
+body{
+	background: linear-gradient(#00BCD4,#4DD0E1);
+		font-family:Montserrat;
+}
+textarea {
+  margin-top: 10px;
+  margin-left:5%;
+  width: 500px;
+  height: 100px;
+  -moz-border-bottom-colors: none;
+  -moz-border-left-colors: none;
+  -moz-border-right-colors: none;
+  -moz-border-top-colors: none;
+  /*background: none repeat scroll 0 0 rgba(0, 0, 0, 0.07);*/
+  border-color: -moz-use-text-color #FFFFFF #FFFFFF -moz-use-text-color;
+  border-image: none;
+  border-radius: 6px 6px 6px 6px;
+  border-style: none solid solid none;
+  border-width: medium 1px 1px medium;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12) inset;
+  color: #555555;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 1em;
+  line-height: 1.4em;
+  padding: 5px 8px;
+  transition: background-color 0.2s ease 0s;
+  resize:none;
+}
+
+.navbar-default{
+    background-color:#00bcd4;'
+	margin-top:-4%;
+}
+
+textarea:focus {
+    background: none repeat scroll 0 0 #FFFFFF;
+    outline-width: 0;
+}
 
 .CodeMirror {
   /* Set height, width, borders, and global font properties here */
@@ -41,6 +79,15 @@
 
 /* CURSOR */
 
+body {
+    height: 100%;
+    margin: 0;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+html {
+    height: 100%;
+}
 .CodeMirror-cursor {
   border-left: 1px solid black;
   border-right: none;
@@ -195,6 +242,13 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {color: #f22;}
   left: 0; bottom: 0;
 }
 
+#top{
+	padding-top: 5%;
+    margin-bottom: -5%;
+}
+h3{
+	margin-bottom:-3%;
+}
 .CodeMirror-gutters {
   position: absolute; left: 0; top: 0;
   min-height: 100%;
@@ -339,3 +393,123 @@ div.CodeMirror-dragcursors {
 
 /* Help users use markselection to safely style text background */
 span.CodeMirror-selectedtext { background: none; }
+@import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+
+.transition (@time: .5s, @range: all, @ease: ease-out) {
+  -moz-transition: @range @time @ease;
+  -webkit-transition: @range @time @ease;
+  -o-transition: @range @time @ease;
+  transition: @range @time @ease;
+}
+
+.transition-delay (@time: .4s) {
+	-webkit-transition-delay: @time;  
+	-moz-transition-delay: @time;  
+	-o-transition-delay: @time;  
+	-transition-delay: @time; 
+}
+
+.border-radius(@radius) {
+	-moz-border-radius:@radius;
+	-webkit-border-radius:@radius; 
+  border-radius: @radius;
+}
+
+.gradient (@coler1: #fff, @coler2: #ccc) {
+    background: @coler1;
+    background: -moz-linear-gradient(@coler1, @coler2);
+    background: -webkit-linear-gradient(@coler1, @coler2);
+    background: -o-linear-gradient(@coler1, @coler2);
+}
+
+.box-shadow(@dims:0 0 10px, @color:#000) {
+	box-shadow: @dims @color; // Opera, FFX4
+	-moz-box-shadow:@dims @color; // FFX3.5
+	-webkit-box-shadow:@dims @color; // Safari/Chrome/WebKit
+	.ie7 { filter: e(%("progid:DXImageTransform.Microsoft.Shadow(color='%d', Direction=135, Strength=3)", @color)); }
+}
+
+.inset(@dims:1px 1px 1px, @color:#fff) {
+    box-shadow: @dims @color; // Opera, FFX4
+    -moz-box-shadow:@dims @color; // FFX3.5
+    -webkit-box-shadow:@dims @color; // Safari/Chrome/WebKit
+}
+
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    -webkit-animation-name: fadeIn; /* Fade in the background */
+    -webkit-animation-duration: 0.4s;
+    animation-name: fadeIn;
+    animation-duration: 0.4s
+}
+
+/* Modal Content */
+.modal-content {
+    position: fixed;
+    bottom: 0;
+    background-color: #fefefe;
+    width: 100%;
+    -webkit-animation-name: slideIn;
+    -webkit-animation-duration: 0.4s;
+    animation-name: slideIn;
+    animation-duration: 0.4s
+}
+
+/* The Close Button */
+.close {
+    color: white;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-header {
+    padding: 2px 16px;
+    background-color: #5cb85c;
+    color: white;
+}
+
+.modal-body {padding: 2px 16px;}
+
+.modal-footer {
+    padding: 2px 16px;
+    background-color: #5cb85c;
+    color: white;
+}
+
+/* Add Animation */
+@-webkit-keyframes slideIn {
+    from {bottom: -300px; opacity: 0} 
+    to {bottom: 0; opacity: 1}
+}
+
+@keyframes slideIn {
+    from {bottom: -300px; opacity: 0}
+    to {bottom: 0; opacity: 1}
+}
+
+@-webkit-keyframes fadeIn {
+    from {opacity: 0} 
+    to {opacity: 1}
+}
+
+@keyframes fadeIn {
+    from {opacity: 0} 
+    to {opacity: 1}
+}

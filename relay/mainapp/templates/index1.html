@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -5,15 +6,42 @@
   <meta name="keywords" content="Code Relay by BITS-ACM">
   <meta name="author" content="Honnesh Rohmetra">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <link rel="stylesheet" href="C:\Users\Honnesh\Desktop\coderelay-master\coderelay-master\relay\static\css\ide.css">
-  <link rel="stylesheet" href="C:\Users\Honnesh\Desktop\coderelay-master\coderelay-master\relay\static\css\addon\dialog.css">
-   <link rel="stylesheet" href="C:\Users\Honnesh\Desktop\coderelay-master\coderelay-master\relay\static\css\codemirror.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Montserrat"/>
-  <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+   <link rel="stylesheet" type="text/css" href="{% static 'css/ide.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/addon/dialog.css' %}">
+   <link rel="stylesheet" type="text/css" href="{% static 'css/codemirror.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap-toggle.min.css' %}">
+  <script src="{% static 'js/jquery.min.js' %}"></script>
+  <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    
+    <link rel="stylesheet" type="text/css" href="{% static 'css/montserrat.css' %}"/>
+	<!--<link  href="../../../relay/static/css/fonts/glyphicons-halflings-regular.ttf"/>
+	<link  href="../../../relay/static/css/fonts/glyphicons-halflings-regular.eot"/>
+	<link  href="../../../relay/static/css/fonts/glyphicons-halflings-regular.woff"/>
+	<link  href="../../../relay/static/css/fonts/glyphicons-halflings-regular.woff2"/>-->
+	<link rel="stylesheet" type="text/css" href="{% static 'fonts/glyphicons-halflings-regular.eot' %}"/>
+  <script src="{% static 'js/bootstrap-toggle.min.js' %}"></script>
+
+  <script src="{% static 'js/codemirror.js' %}"></script>
+  <script src="{% static 'js/mode/simple.js' %}"></script>
+  <script src="{% static 'js/mode/clike.js' %}"></script>
+
+  <script src="{% static 'js/mode/python.js' %}"></script>
+
+
+  <script src="{% static 'js/download.js' %}"></script>
+
+
+  <script src="{% static 'js/addon/searchcursor.js' %}"></script>
+  <script src="{% static 'js/addon/search.js' %}"></script>
+  <script src="{% static 'js/addon/dialog.js' %}"></script>
+  <script src="{% static 'js/addon/matchbrackets.js' %}"></script>
+  <script src="{% static 'js/addon/closebrackets.js' %}"></script>
+
+  <script src="{% static 'js/keymap/vim.js' %}"></script>
+
+  <script src="{% static 'js/ide.js' %}"></script>
+
   <style>
 /* The Modal (background) */
 .modal {
@@ -31,7 +59,7 @@
     -webkit-animation-duration: 0.4s;
     animation-name: fadeIn;
     animation-duration: 0.4s;
-	z-index:5000;
+  z-index:5000;
 }
 
 /* Modal Content */
@@ -67,7 +95,7 @@
     color: white;
 }
 
-.modal-body {padding: 2px 16px;}
+.modal-body {padding: 2px 16px}
 
 .modal-footer {
     padding: 2px 16px;
@@ -112,17 +140,7 @@
       <h2>SURVIVE</h2>
     </div>
     <div class="modal-body">
-      <p>You are a poor person in ChocoLand. Here, people eat chocolates daily instead of normal food. There is only one shop near your home; this shop is closed on Sunday, but open on all other days of the week. You may buy at most one box of N chocolates from this shop on each day when it is open.
-
-Currently, it's Monday, and you need to survive for the next S days (including the current day). You have to eat K chocolates everyday (including the current day) to survive. Do note that you are allowed to buy the a chocolate box and eat from it on the same day.
-
-Compute the minimum number of days on which you need to buy from the shop so that you can survive the next S days, or determine that it isn't possible to survive.</p>
-      <h3>
-	  Input</h3>
-<p>The first line of the input contains a single integer T denoting the number of test cases. The description of T test cases follows.
-The first and only line of each test case contains 3 integers N, K and S denoting the number of chocolates in a box, the number of chocolates you have to eat everyday to survive and the number of days you need to survive.
-</p><h3>Output</h3>
-<p>For each test case, print a single line containing one integer — the minimum number of days on which you need to buy from the shop to survive, or -1 if you will not be able to survive S days.</p>
+      <p>{{code.question.question_text|safe}}</p>
 
     </div>
     <div class="modal-footer">
@@ -172,14 +190,16 @@ window.onclick = function(event) {
          <!-- <span style="color:#f1f3f1;font-family:montserrat;font-weight:900">CODE</span><span style="color:#111;font-family:montserrat;font-weight:900">RELAY</span>-->
         </a>
       </div>
-      <div class="navbar-form navbar-right">
+      <div class="navbar-form navbar-right" style="margin-right: 10%">
         <div class="input-group">
           <div class="input-group-btn">
             <!--<button id="insertTemplateBtn" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="Insert template">-->
               <span class="glyphicon glyphicon-file" style="background-color:#00B8D4" aria-hidden="true"></span>
             </button>
           </div>
-          <select class="form-control" id="selectLanguageBtn" style="background-color:#00B8D4; color:white">
+          <select class="form-control" id="selectLanguageBtn" style="    background-color: #5bc0de;
+    color: white; border-width: 2px;
+    border-radius: 10px; -moz-appearance: none;">
             <option value="4" mode="text/x-csrc">C (gcc 7.2.0)</option>
             <option value="10" mode="text/x-c++src">C++ (g++ 7.2.0)</option>
             <option value="26" mode="text/x-java">Java</option>
@@ -188,81 +208,64 @@ window.onclick = function(event) {
           </select>
         </div>
         <button class="btn btn-info" id="runBtn" data-loading-text="Running...">
-          <span class="glyphicon glyphicon-play" aria-hidden="true"></span> Run (F9)
+          <span class="glyphicon glyphicon-play" aria-hidden="true"></span> Run
         </button>
         <button class="btn btn-info" id="saveBtn" data-loading-text="Saving...">
-          <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Save (Ctrl+S)
+          <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Save
         </button>
-		        <button class="btn btn-success" id="submitBtn" data-loading-text="Submitting...">
+            <button class="btn btn-success" id="submitBtn" data-loading-text="Submitting...">
           <span class="" aria-hidden="true"></span> Submit
         </button>
-		        <button class="btn btn-warning" id="quitBtn" data-loading-text="Quitting...">
-          <span class="glyphicon glyphicon-home" aria-hidden="true"></span> Quit Race
+            <button class="btn btn-warning" id="quitBtn" data-loading-text="Quitting...">
+          <span class="glyphicon glyphicon-home" aria-hidden="true"></span> Finish Race
         </button>
-        <button class="btn btn-default" id="downloadSourceBtn" data-toggle="tooltip" data-placement="bottom" title="Download source">
-          <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
-        </button>
-        <div class="vertical-spacer"></div>
-        <input type="checkbox" id="vimCheckBox" data-toggle="toggle" data-on="Vim Mode On" data-off="Vim Mode Off" data-onstyle="success">
-      </div>
-    </div>
-	<!--<h3><span style="color:#f1f3f1;float: right;margin-top: -4%;margin-right: 15%;font-weight: 300;">PersonName</span>&nbsp;<span style="color:#111;float: right;margin-top: -4%; font-weight: 900;">TeamName</span></h3>
-  --></nav>
 
-  <div id="sourceEditor"><textarea style="width:95%; height:95%; margin:1%; margin-left:1.5%;" placeholder="Code" rows="20" name="comment[text]" id="comment_text" cols="40" class="ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true"></textarea></div>
+    </div>
+  <!--<h3><span style="color:#f1f3f1;float: right;margin-top: -4%;margin-right: 15%;font-weight: 300;">PersonName</span>&nbsp;<span style="color:#111;float: right;margin-top: -4%; font-weight: 900;">TeamName</span></h3>
+  --></nav>
+  <div id="sourceEditor" style="width:95%; height:50%; margin:1%; margin-left:1.5%;margin-top:1%; border-radius: 100px"></div>
+
 
   <div class="container-fluid">
     <div class="row labels">
       <div id="inputLabel" class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
         <h4>
           <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span> Input <small>optional</small>
-          <button class="btn btn-default pull-right" id="downloadInputBtn" data-toggle="tooltip" data-placement="top" title="Download input">
-            <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
-          </button>
-		  
+
+      
         </h4>
       </div>
       <div id="outputLabel" class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
         <h4>
           <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Output <small id="emptyIndicator">empty</small>
-          <button class="btn btn-default pull-right" id="downloadOutputBtn" data-toggle="tooltip" data-placement="top" title="Download output">
-            <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
-          </button>
+
           <small class="pull-right" id="statusLine"></small>
-		
+    
         </h4>
       </div>
     </div>
 
     <div class="row ioEditors">
-      <div id="inputEditor" class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-	  <textarea placeholder="Input" style="margin-left:3%" rows="20" name="comment[text]" id="comment_text" cols="40" class="ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true"></textarea></div>
-      <div id="outputEditor" class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-	    <textarea placeholder="Output" rows="20" name="comment[text]" id="comment_text" cols="40" class="ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true"></textarea></div>
+      <div id="inputEditor" class="col-xs-6 col-sm-6 col-md-6 col-lg-6"></div>
+      <div id="outputEditor" class="col-xs-6 col-sm-6 col-md-6 col-lg-6"></div>
     </div>
     <p id="abc"></p>
     </div>
-	<script>
-// Get the modal
+  <script>
 var modal = document.getElementById('myModal');
 
-// Get the button that opens the modal
 var btn = document.getElementById("myBtn");
 
-// Get the <span> element that closes the modal
 var span = document.getElementsByClassName("close")[0];
 
-// When the user clicks the button, open the modal 
 btn.onclick = function() {
     modal.style.display = "block";
 }
 
-// When the user clicks on <span> (x), close the modal
 span.onclick = function() {
     modal.style.display = "none";
 }
 
-// When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
     if (event.target == modal) {
         modal.style.display = "none";

@@ -132,7 +132,7 @@ def ajaxlogin(request):
                             u1 = UserProfile.objects.get(user=user)
                             t = Team.objects.filter(Q(user1=u1) | Q(user2=u1))[0]
                             if t.time<time.time():
-                                t.time = time.time()+randint(300,400)
+                                t.time = time.time()+randint(130,140)
                                 t.save()
                             success = True
                         except:
@@ -170,20 +170,23 @@ def runcode(request):
     lc = str(langcode[lang])
     t = str([str(input)])
     start_time = time.time()
-    d = {'source': code, 'lang': lc, 'testcases': t,
-         'api_key': 'hackerrank|2189697-2296|d21998aae507a388dd24d947e5c07073f8af7e44'}
-    r = requests.post('http://api.hackerrank.com/checker/submission.json', data=d)
-    print(json.loads(r.text))
-    abc = json.loads(r.text)
-    print("--- %s seconds ---" % (time.time() - start_time))
-    data = {
-        'compiles': abc["result"]["stderr"]==[False],
-    }
-    if data['compiles']:
-        data['output'] = abc["result"]["stdout"]
-    else:
-        data['output'] = abc["result"]["stderr"]
-    print(data)
+    try:
+        d = {'source': code, 'lang': lc, 'testcases': t,
+             'api_key': 'hackerrank|2189697-2296|d21998aae507a388dd24d947e5c07073f8af7e44'}
+        r = requests.post('http://api.hackerrank.com/checker/submission.json', data=d)
+        print(json.loads(r.text))
+        abc = json.loads(r.text)
+        print("--- %s seconds ---" % (time.time() - start_time))
+        data = {
+            'compiles': abc["result"]["stderr"]==[False],
+        }
+        if data['compiles']:
+            data['output'] = abc["result"]["stdout"]
+        else:
+            data['output'] = abc["result"]["stderr"]
+        print(data)
+    except:
+        data = {'output': "Some error occured", 'compiles': False}
     return JsonResponse(data)
 
 
@@ -217,7 +220,7 @@ def swapcode(request):
         c2.save()
         t.time = time.time()+randint(300,400)
         t.save()
-    return JsonResponse({'question': c2.question.question_text, 'code': c2.code, 'lang': c2.lang, 'time': t.time})
+    return JsonResponse({'question': c2.question.question_text, 'heading': c2.question.heading, 'code': c2.code, 'lang': c2.lang, 'time': t.time})
 
 def savecode(request):
     code = request.GET.get('code', None)
@@ -299,13 +302,13 @@ def submitques(request):
             x = t.user2q = ques_list[max(qlist.index(t.user1q),qlist.index(t.user2q))+1]
         t.save()
     except:
-        return JsonResponse({'question': cd.question.question_text, 'done': True})               
-    return JsonResponse({'question': x.question_text})
+        return JsonResponse({'question': cd.question.question_text, 'heading': cd.heading, 'done': True})               
+    return JsonResponse({'question': x.question_text, 'heading': x.heading})
 
 
 
 def abcd(request):
-    return render(request, "compiler.html")
+    return render(request, "index1.html")
 
 
 @login_required(login_url='/')
@@ -352,4 +355,4 @@ def compiler(request):
             except:
                 code = Code(question=q, team=t)
     print(code.code)
-    return render(request, "index.html",{'time':t.time, 'code': code})
+    return render(request, "game.html",{'user': u, 'team': t, 'time':t.time, 'code': code})

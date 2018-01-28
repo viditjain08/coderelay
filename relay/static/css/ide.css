@@ -15,16 +15,21 @@ body {
 }
 
 .navbar-default {
-  background-color: var(--primary-brand-colour);
+  background-color:#00bcd4;
   border-bottom: 1px solid var(--main-border-colour);
 }
 
 .navbar-default .navbar-brand {
-  color: #ddd;
+  color: #00bcd4;
   padding: 12px 15px 12px 15px;
   font-size: 24px;
   line-height: 26px;
   font-weight: bold;
+}
+.newnav{
+	font-size:270%;
+	margin-top:0%;
+	background-color:#00BCD4
 }
 
 .navbar-default .navbar-brand:hover {
@@ -43,12 +48,9 @@ body {
 .navbar {
   margin-bottom: 0px;
 }
-
-#sourceEditor {
-  border-bottom: 1px solid var(--main-border-colour);
-  min-height: 400px;
-  height: 60%;
-}
+    border-bottom: 1px solid var(--main-border-colour);
+    min-height: 100px;
+    height: 50%;
 
 #selectLanguageBtn {
   max-width: 330px;
@@ -59,7 +61,6 @@ body {
 }
 
 #inputEditor, #outputEditor {
-  min-height: 300px;
   height: 40%;
 }
 

@@ -20,6 +20,7 @@ class UserProfile(models.Model):
 
 
 class Question(models.Model):
+    heading = models.TextField(max_length=200, default='')
     question_text = RichTextField()
 
     def __str__(self):
@@ -46,7 +47,7 @@ class Code(models.Model):
     swap = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.user.ip + "-" + str(self.lang)
+        return self.team.user1.teamname + "-" + str(self.lang)
 
 class GameSwitch(models.Model):
     name=models.CharField(null=False,max_length=10)
