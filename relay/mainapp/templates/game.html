@@ -125,7 +125,59 @@
 }
 </style>
 </head>
-<body>
+<script>
+var myVar;
+function load() {
+var timex = Math.floor({{time}}-120-Date.parse(new Date())/1000);
+var timey = Math.floor({{time}}-Date.parse(new Date())/1000);
+console.log(timex);
+setTimeout(function() { x({{time}}); }, timex*1000);
+setTimeout(y, timey*1000);
+}
+
+function y() {
+    document.getElementById("saveBtn").click();
+    clearInterval(myVar);
+	document.getElementById("timer").innerHTML = '';
+
+    $.ajax({
+        url: '/ajax/swapcode/',
+        data: {
+          'code': sourceEditor.getValue(),
+          'lang': $("#selectLanguageBtn").val(),
+        },
+        dataType: 'json',
+        success: function (data) {
+            if(data.finish) {
+              document.getElementById("finishRace").click();
+            }
+            //outputEditor.setValue(data.output);
+            document.getElementById("qhead").innerHTML = data.heading;
+            document.getElementById("qbody").innerHTML = data.question;
+
+            sourceEditor.setValue(data.code);
+            document.getElementById("selectLanguageBtn").value=data.lang;
+            var timex1 = Math.floor(data.time-120-Date.parse(new Date())/1000);
+
+            var timey1 = Math.floor(data.time - Date.parse(new Date())/1000);
+            setTimeout(function() { x(data.time); }, timex1*1000);
+
+            setTimeout(y, timey1*1000);
+
+          
+        }
+      });}
+function x(time) {
+myVar = setInterval(myTimer, 1000);
+function myTimer() {
+
+    document.getElementById("timer").innerHTML = '<span style="color:#f1f3f1;font-family:montserrat;font-weight:100; font-size:150%;margin-left:25%;">SWAP IN-</span><span style="color:#111;font-family:montserrat;font-weight:100; font-size:150%;">'+Math.floor((time-Date.parse(new Date())/1000)/60)+':'+Math.floor((time-Date.parse(new Date())/1000)%60)+'</span>';
+
+}
+}
+
+</script>
+<body onload="load()">
 
 <!-- Trigger/Open The Modal -->
 
@@ -137,9 +189,9 @@
   <div class="modal-content">
     <div class="modal-header">
       <span class="close">&times;</span>
-      <h2>{{code.question.heading}}</h2>
+      <h2 id="qhead">{{code.question.heading}}</h2>
     </div>
-    <div class="modal-body">
+    <div class="modal-body" id="qbody">
       <p>{{code.question.question_text|safe}}</p>
 
     </div>
@@ -287,48 +339,9 @@ $(document).ready(function(){
 
 };
 
-var timex = Math.floor({{time}}-120-Date.parse(new Date())/1000);
-var timey = Math.floor({{time}}-Date.parse(new Date())/1000);
-console.log(timex);
-setTimeout(function() { x({{time}}); }, timex*1000);
-setTimeout(y, timey*1000);
-function y() {
-    document.getElementById("saveBtn").click();
 
-    $.ajax({
-        url: '/ajax/swapcode/',
-        data: {
-          'code': sourceEditor.getValue(),
-          'lang': $("#selectLanguageBtn").val(),
-        },
-        dataType: 'json',
-        success: function (data) {
-            if(data.finish) {
-              document.getElementById("finishRace").click();
-            }
-            //outputEditor.setValue(data.output);
-            document.getElementById("q").innerHTML = data.question;
-            sourceEditor.setValue(data.code);
-            $("#timer").hide();
-            document.getElementById("selectLanguageBtn").value=data.lang;
-            var timex1 = Math.floor(data.time-120-Date.parse(new Date())/1000);
 
-            var timey1 = Math.floor(data.time - Date.parse(new Date())/1000);
-            setTimeout(function() { x(date.time); }, timex1*1000);
 
-            setTimeout(y, timey1*1000);
-
-          
-        }
-      });}
-function x(time) {
-var myVar = setInterval(myTimer, 1000);
-function myTimer() {
-    var minute = Math.floor((time-Date.parse(new Date())/1000)/60);
-    var second = Math.floor((time-Date.parse(new Date())/1000)%60);
-    document.getElementById("timer").innerHTML = '<span style="color:#f1f3f1;font-family:montserrat;font-weight:100; font-size:150%;margin-left:25%;">SWAP IN-</span><span style="color:#111;font-family:montserrat;font-weight:100; font-size:150%;">'+minute+':'+second+'</span>';
-};
-};
 
   $("#runBtn").click(function(e) {
     $.ajax({
@@ -406,7 +419,9 @@ document.addEventListener('contextmenu', event => event.preventDefault());
             }
             insertTemplate();
             if(!data.done) {
-            document.getElementById("q").innerHTML = data.question;
+            document.getElementById("qhead").innerHTML = data.heading;
+            document.getElementById("qbody").innerHTML = data.question;
+
           }
 
         }
@@ -460,7 +475,7 @@ function exitHandler()
 }
 
 
- //window.addEventListener('blur', stopTimer);
+ window.addEventListener('blur', stopTimer);
  
   function stopTimer() {
   window.location = "/logout";

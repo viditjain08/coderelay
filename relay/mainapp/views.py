@@ -155,7 +155,7 @@ def ajaxlogin(request):
 
 def logout(request):
     authlogout(request)
-    return HttpResponseRedirect('/login')
+    return HttpResponseRedirect('/')
 
 
 def runcode(request):
@@ -191,8 +191,10 @@ def runcode(request):
 
 
 def swapcode(request):
+    time.sleep(5)
     u = UserProfile.objects.get(user=request.user)
     t = Team.objects.get(Q(user1=u) | Q(user2=u))
+    print(t.time)
     if t.enable==False:
         return JsonResponse({'finish': True})
     if t.user1q is None or t.user2q is None:
@@ -200,26 +202,41 @@ def swapcode(request):
     if t.user1==u:
         c1 = Code.objects.get(team=t,question=t.user1q)
         c1.swap=True
-        c1.save()
         c2 = Code.objects.get(team=t,question=t.user2q)
-        while c2.swap==False:
-            c2 = Code.objects.get(team=t,question=t.user2q)
+        c2.swap=True
+        x = t.user2q
         t.user2q = t.user1q
-        c2.swap = False
-        c2.save()
+        t.user1q = x
+        t.time = time.time()+randint(130,140)
         t.save()
-    else:
-        c1 = Code.objects.get(team=t,question=t.user2q)
-        c1.swap=True
         c1.save()
-        c2 = Code.objects.get(team=t,question=t.user1q)
-        while c2.swap==False:
-            c2 = Code.objects.get(team=t,question=t.user1q)
-        t.user1q = t.user2q
-        c2.swap = False
         c2.save()
-        t.time = time.time()+randint(300,400)
-        t.save()
+        print("vidit")
+
+    else:
+        while 1:
+            try:
+                c1 = Code.objects.get(team=t,question=t.user1q)
+                break
+            except:
+                print("1")
+        c2 = Code.objects.get(team=t,question=t.user2q)
+        print("A")
+        while c1.swap==False or c2.swap==False:
+            t = Team.objects.get(Q(user1=u) | Q(user2=u))
+            c1 = Code.objects.get(team=t,question=t.user1q)
+            c2 = Code.objects.get(team=t,question=t.user2q)
+        print("b")
+        t = Team.objects.get(Q(user1=u) | Q(user2=u))
+        c1 = Code.objects.get(team=t,question=t.user1q)
+        c2 = Code.objects.get(team=t,question=t.user2q)
+        c1.swap = False
+        c2.swap = False
+        c1.save()
+        c2.save()
+    print(c2.question.heading)
+    t = Team.objects.get(Q(user1=u) | Q(user2=u))
+    print(t.time)
     return JsonResponse({'question': c2.question.question_text, 'heading': c2.question.heading, 'code': c2.code, 'lang': c2.lang, 'time': t.time})
 
 def savecode(request):
