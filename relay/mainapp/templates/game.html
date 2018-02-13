@@ -201,34 +201,49 @@ function myTimer() {
   </div>
 
 </div>
+<!-- The Modal -->
+<div id="rulesModal" class="modal" style="display:block">
 
-<script>
-// Get the modal
-var modal = document.getElementById('myModal');
+  <!-- Modal content -->
+  <div class="modal-content">
+    <div class="modal-header" style="background-color:#00bcd4">
+   <!--   <span class="close">&times;</span>-->
+      <h2 style="text-align:center">Code Of Conduct</h2>
+    </div>
+    <div class="modal-body">
+     <ul>
+   <li>The duration of the event is two hours.
+<li> Participants are not allowed to communicate with any other participant
+including teammates in any form.
+ <li>The allowed languages are C, C++, Java and Python.
+ <li>Team members are to use the same language.
+ <li>Any form of malpractice will lead to disqualification.
+ <li>The decision of the authorities will be final and binding
+   <li>The duration of the event is two hours.
+<li> Participants are not allowed to communicate with any other participant
+including teammates in any form.
+ <li>The allowed languages are C, C++, Java and Python.
+ <li>Team members are to use the same language.
+ <li>Any form of malpractice will lead to disqualification.
+ <li>The decision of the authorities will be final and binding
+   <li>The duration of the event is two hours.
+<li> Participants are not allowed to communicate with any other participant
+including teammates in any form.
+ <li>The allowed languages are C, C++, Java and Python.
+ <li>Team members are to use the same language.
+ <li>Any form of malpractice will lead to disqualification.
+ <li>The decision of the authorities will be final and binding
+   <li>The duration of the event is two hours.
+    <li>Any form of malpractice will lead to disqualification.
+ </ul>
+ <div class="wrapper"> <button id="close_button" class="btn btn-primary" style="font-size:120%;height:110%;"> Let's Begin! </button></div>
+    </div>
+    <div class="modal-footer" style="background-color:#00bcd4">
+      <h3>CODERELAY</h3>
+    </div>
+  </div>
 
-// Get the button that opens the modal
-var btn = document.getElementById("myBtn");
-
-// Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
-
-// When the user clicks the button, open the modal 
-btn.onclick = function() {
-    modal.style.display = "block";
-}
-
-// When the user clicks on <span> (x), close the modal
-span.onclick = function() {
-    modal.style.display = "none";
-}
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-}
-</script>
+</div>
 
 <span style="color:#f1f3f1;font-family:montserrat;font-weight:900; font-size:250%; margin-left:1%">CODE</span><span style="color:#111;font-family:montserrat;font-weight:900; font-size:250%;">RELAY</span>
 <span id="timer"></span>
@@ -240,7 +255,7 @@ window.onclick = function(event) {
       <div class="navbar-header">
         <!--<a class="navbar-brand newnav " href=""-->
 <button id="myBtn" class="btn btn-danger" style="margin-left:20% ;font-size:120%;height:110%;"> Question </button>
-  
+<button id="rules" class="btn btn-warning" style="margin-left:30% ;font-size:120%;height:110%; float: right; margin-top: -14%"> Instructions </button>
          <!-- <span style="color:#f1f3f1;font-family:montserrat;font-weight:900">CODE</span><span style="color:#111;font-family:montserrat;font-weight:900">RELAY</span>-->
         </a>
       </div>
@@ -526,4 +541,44 @@ document.addEventListener("msfullscreenchange", function(e) {
 });
 
 // Add different events for fullscreen
+</script>
+  <script>
+var modal = document.getElementById('myModal');
+
+var btn = document.getElementById("myBtn");
+
+var span = document.getElementsByClassName("close")[0];
+
+btn.onclick = function() {
+    modal.style.display = "block";
+}
+
+span.onclick = function() {
+    modal.style.display = "none";
+}
+
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+var modal1 = document.getElementById('rulesModal');
+
+var btn1 = document.getElementById("rules");
+var btn2 = document.getElementById("close_button");
+
+btn1.onclick = function() {
+    modal1.style.display = "block";
+}
+btn2.onclick = function() {
+    modal1.style.display = "none";
+    launchFullscreen(document.documentElement);
+}
+
+window.onclick = function(event) {
+    if (event.target == modal1) {
+        modal1.style.display = "none";
+    }
+}
+
 </script>

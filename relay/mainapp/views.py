@@ -173,6 +173,7 @@ def runcode(request):
     try:
         d = {'source': code, 'lang': lc, 'testcases': t,
              'api_key': 'hackerrank|2189697-2296|d21998aae507a388dd24d947e5c07073f8af7e44'}
+        print(d)
         r = requests.post('http://api.hackerrank.com/checker/submission.json', data=d)
         print(json.loads(r.text))
         abc = json.loads(r.text)
@@ -183,7 +184,10 @@ def runcode(request):
         if data['compiles']:
             data['output'] = abc["result"]["stdout"]
         else:
-            data['output'] = abc["result"]["stderr"]
+            if abc["result"]["stderr"]==None:
+                data['output'] = abc["result"]["compilemessage"]
+            else:
+                data['output'] = abc["result"]["stderr"]
         print(data)
     except:
         data = {'output': "Some error occured", 'compiles': False}
