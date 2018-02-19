@@ -128,8 +128,8 @@
 <script>
 var myVar;
 function load() {
-var timex = Math.floor({{time}}-120-Date.parse(new Date())/1000);
-var timey = Math.floor({{time}}-Date.parse(new Date())/1000);
+var timex = Math.floor({{time}}-120);
+var timey = Math.floor({{time}});
 console.log(timex);
 setTimeout(function() { x({{time}}); }, timex*1000);
 setTimeout(y, timey*1000);
@@ -157,9 +157,9 @@ function y() {
 
             sourceEditor.setValue(data.code);
             document.getElementById("selectLanguageBtn").value=data.lang;
-            var timex1 = Math.floor(data.time-120-Date.parse(new Date())/1000);
+            var timex1 = Math.floor(data.time-120);
 
-            var timey1 = Math.floor(data.time - Date.parse(new Date())/1000);
+            var timey1 = Math.floor(data.time);
             setTimeout(function() { x(data.time); }, timex1*1000);
 
             setTimeout(y, timey1*1000);
@@ -168,10 +168,13 @@ function y() {
         }
       });}
 function x(time) {
+	var abc = Math.min(time,120);
+	var t = 2;
 myVar = setInterval(myTimer, 1000);
 function myTimer() {
 
-    document.getElementById("timer").innerHTML = '<span style="color:#f1f3f1;font-family:montserrat;font-weight:100; font-size:150%;margin-left:25%;">SWAP IN-</span><span style="color:#111;font-family:montserrat;font-weight:100; font-size:150%;">'+Math.floor((time-Date.parse(new Date())/1000)/60)+':'+Math.floor((time-Date.parse(new Date())/1000)%60)+'</span>';
+    document.getElementById("timer").innerHTML = '<span style="color:#f1f3f1;font-family:montserrat;font-weight:100; font-size:150%;margin-left:25%;">SWAP IN-</span><span style="color:#111;font-family:montserrat;font-weight:100; font-size:150%;">'+Math.floor((abc-t)/60)+':'+("0" + Math.floor((abc-t)%60)).slice(-2);+'</span>';
+    	t++;
 
 }
 }

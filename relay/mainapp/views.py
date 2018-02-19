@@ -11,6 +11,7 @@ import time
 from.forms import registerform, loginform
 from .models import *
 import html
+from datetime import datetime
 # Create your views here.
 
 
@@ -34,6 +35,10 @@ def ajaxregister(request):
             if form.is_valid():
                 print("1")
                 formdata=form.cleaned_data
+                if formdata['password1']!=formdata['password2']:
+                    error = "Passwords do no match"
+                    return JsonResponse({'error': error, 'success': success})
+
                 if User.objects.filter(username=formdata['id']).count()>0:
                     error = "ID already registered"
                 elif UserProfile.objects.filter(teamname=formdata['teamname']).count()>1:
@@ -131,8 +136,8 @@ def ajaxlogin(request):
                         try:
                             u1 = UserProfile.objects.get(user=user)
                             t = Team.objects.filter(Q(user1=u1) | Q(user2=u1))[0]
-                            if t.time<time.time():
-                                t.time = time.time()+randint(130,140)
+                            if t.time<time.mktime(datetime.now().timetuple()):
+                                t.time = time.mktime(datetime.now().timetuple())+randint(130,140)
                                 t.save()
                             success = True
                         except:
@@ -169,7 +174,7 @@ def runcode(request):
         return JsonResponse({'finish': True})
     lc = str(langcode[lang])
     t = str([str(input)])
-    start_time = time.time()
+    start_time = time.mktime(datetime.now().timetuple())
     try:
         d = {'source': code, 'lang': lc, 'testcases': t,
              'api_key': 'hackerrank|2189697-2296|d21998aae507a388dd24d947e5c07073f8af7e44'}
@@ -177,7 +182,7 @@ def runcode(request):
         r = requests.post('http://api.hackerrank.com/checker/submission.json', data=d)
         print(json.loads(r.text))
         abc = json.loads(r.text)
-        print("--- %s seconds ---" % (time.time() - start_time))
+        print("--- %s seconds ---" % (time.mktime(datetime.now().timetuple()) - start_time))
         data = {
             'compiles': abc["result"]["stderr"]==[False],
         }
@@ -195,7 +200,7 @@ def runcode(request):
 
 
 def swapcode(request):
-    time.sleep(5)
+    time.sleep(2)
     u = UserProfile.objects.get(user=request.user)
     t = Team.objects.get(Q(user1=u) | Q(user2=u))
     print(t.time)
@@ -211,7 +216,7 @@ def swapcode(request):
         x = t.user2q
         t.user2q = t.user1q
         t.user1q = x
-        t.time = time.time()+randint(130,140)
+        t.time = time.mktime(datetime.now().timetuple())+randint(130,140)
         t.save()
         c1.save()
         c2.save()
@@ -241,7 +246,7 @@ def swapcode(request):
     print(c2.question.heading)
     t = Team.objects.get(Q(user1=u) | Q(user2=u))
     print(t.time)
-    return JsonResponse({'question': c2.question.question_text, 'heading': c2.question.heading, 'code': c2.code, 'lang': c2.lang, 'time': t.time})
+    return JsonResponse({'question': c2.question.question_text, 'heading': c2.question.heading, 'code': c2.code, 'lang': c2.lang, 'time': t.time-time.mktime(datetime.now().timetuple())})
 
 def savecode(request):
     code = request.GET.get('code', None)
@@ -376,4 +381,5 @@ def compiler(request):
             except:
                 code = Code(question=q, team=t)
     print(code.code)
-    return render(request, "game.html",{'user': u, 'team': t, 'time':t.time, 'code': code})
+    print(t.time-time.mktime(datetime.now().timetuple()))
+    return render(request, "game.html",{'user': u, 'team': t, 'time':t.time-time.mktime(datetime.now().timetuple()), 'code': code})

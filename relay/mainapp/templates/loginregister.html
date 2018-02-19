@@ -25,6 +25,7 @@ $(document).ready(function(){
         data: {
           	'teamname': $('#id_teamname').val(),
           	'password1': $('#id_password1').val(),
+            'password2': $('#id_password2').val(),
           	'name': $('#id_name').val(),
           	'id': $('#id_id').val(),
         	csrfmiddlewaretoken: '{{ csrf_token }}'
@@ -104,6 +105,9 @@ $(document).ready(function(){
   </div>
 <div class="logindata" id="logindata4">
     <input type="password" class="form-control" placeholder="Password" id="id_password1">
+  </div>
+<div class="logindata" id="logindata5">
+    <input type="password" class="form-control" placeholder="Password Again" id="id_password2">
   </div>
   	{% csrf_token %}
 
