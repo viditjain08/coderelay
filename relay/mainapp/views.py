@@ -200,47 +200,66 @@ def runcode(request):
 
 
 def swapcode(request):
-    time.sleep(2)
+    code = request.GET.get('code', None)
+    lang = request.GET.get('lang', None)
     u = UserProfile.objects.get(user=request.user)
     t = Team.objects.get(Q(user1=u) | Q(user2=u))
-    print(t.time)
     if t.enable==False:
         return JsonResponse({'finish': True})
-    if t.user1q is None or t.user2q is None:
-        return JsonResponse({'finish': True})
+
     if t.user1==u:
-        c1 = Code.objects.get(team=t,question=t.user1q)
-        c1.swap=True
-        c2 = Code.objects.get(team=t,question=t.user2q)
-        c2.swap=True
-        x = t.user2q
-        t.user2q = t.user1q
-        t.user1q = x
-        t.time = time.mktime(datetime.now().timetuple())+randint(130,140)
+        q = t.user1q
+    else:
+        q = t.user2q
+    try:
+        cd = Code.objects.get(team=t,question=q)
+        cd.code=code
+        cd.lang=int(lang)
+        cd.swap=True
+        cd.save()
+    except:
+        cd = Code(team=t, question=q, code=code, lang=int(lang), swap=True)
+        cd.save()
+
+    print(t.time)
+
+    if t.user1==u:
+        a = False
+        try:
+            c1 = Code.objects.get(team=t,question=t.user1q)
+            c2 = Code.objects.get(team=t,question=t.user2q)
+            a = c2.swap
+        except:
+            pass
+        while a==False:
+            try:
+               c2 = Code.objects.get(team=t,question=t.user2q)
+               a=c2.swap
+            except:
+               pass
+        (t.user1q, t.user2q) = (t.user2q, t.user1q)
+        t.time = time.mktime(datetime.now().timetuple())+randint(30,40)
+        t.swap=True
         t.save()
         c1.save()
         c2.save()
         print("vidit")
+        t = Team.objects.get(Q(user1=u) | Q(user2=u))	
+        return JsonResponse({'question': c2.question.question_text, 'heading': c2.question.heading, 'code': c2.code, 'lang': c2.lang, 'time': t.time-time.mktime(datetime.now().timetuple())})
 
     else:
-        while 1:
+        while t.swap==False:
             try:
-                c1 = Code.objects.get(team=t,question=t.user1q)
-                break
+                t = Team.objects.get(Q(user1=u) | Q(user2=u))
             except:
-                print("1")
+                pass
+
+        t.swap=False
+        t.save()
         c2 = Code.objects.get(team=t,question=t.user2q)
-        print("A")
-        while c1.swap==False or c2.swap==False:
-            t = Team.objects.get(Q(user1=u) | Q(user2=u))
-            c1 = Code.objects.get(team=t,question=t.user1q)
-            c2 = Code.objects.get(team=t,question=t.user2q)
-        print("b")
-        t = Team.objects.get(Q(user1=u) | Q(user2=u))
         c1 = Code.objects.get(team=t,question=t.user1q)
-        c2 = Code.objects.get(team=t,question=t.user2q)
-        c1.swap = False
-        c2.swap = False
+        c2.swap=False
+        c1.swap=False
         c1.save()
         c2.save()
     print(c2.question.heading)

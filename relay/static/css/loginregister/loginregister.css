@@ -49,6 +49,9 @@
   background-color: #f1f3f1;
   color:#00bcd4;
 }
+.buttonstyle{
+  margin-left: 5%;
+}
 
 html {
     height: 100%;
@@ -60,11 +63,12 @@ margin-left:46%;margin-top:10%;;font-size:18pt;color:#00BCD4;background-color:#f
 	margin-left:43%;
 }
 #button3{
-	    margin-left: 81%;
-    margin-top: -12%;
+	   margin-right: -100%;
+margin-top: -15%;
 background-color:#FF6D00;
 border-color:#FF6D00;
 color:#f1f3f1;
+float:right;
 }
 #button4{
 background-color:#FF6D00;
@@ -81,13 +85,16 @@ transform: skew(-10deg);
 }
 p.register{
 	color:#f1f3f1;
-    margin-left: 13%;
+    margin-left: 10%;
     margin-top: 10%;
-    width: 46%;
+    text-align: center;
+    width: 50%;
+    float: left;
 }
 body {
     height: 100%;
-    margin: 0;
+    margin: -2%;
+    width: 100%;
     background-repeat: no-repeat;
     background-attachment: fixed;
 }

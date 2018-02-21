@@ -33,6 +33,7 @@ class Team(models.Model):
     enable = models.BooleanField(default=True)
     user1q = models.ForeignKey(Question, related_name='user1q', blank=True, null=True)
     user2q = models.ForeignKey(Question, related_name='user2q', blank=True, null=True)
+    swap = models.BooleanField(default=False)
     def __str__(self):
         return self.user1.teamname
 

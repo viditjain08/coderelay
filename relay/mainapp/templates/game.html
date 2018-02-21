@@ -71,7 +71,8 @@
     -webkit-animation-name: slideIn;
     -webkit-animation-duration: 0.4s;
     animation-name: slideIn;
-    animation-duration: 0.4s
+    animation-duration: 0.4s;
+    height: 80%;
 }
 
 /* The Close Button */
@@ -88,14 +89,19 @@
     text-decoration: none;
     cursor: pointer;
 }
-
+.modal-dialog {
+    height: 80%;
+}
 .modal-header {
     padding: 2px 16px;
     background-color: #5cb85c;
     color: white;
 }
 
-.modal-body {padding: 2px 16px}
+.modal-body {padding: 2px 16px;
+    max-height: calc(100% - 120px);
+    overflow-y: scroll;
+}
 
 .modal-footer {
     padding: 2px 16px;
@@ -136,7 +142,6 @@ setTimeout(y, timey*1000);
 }
 
 function y() {
-    document.getElementById("saveBtn").click();
     clearInterval(myVar);
 	document.getElementById("timer").innerHTML = '';
 
@@ -239,7 +244,7 @@ including teammates in any form.
    <li>The duration of the event is two hours.
     <li>Any form of malpractice will lead to disqualification.
  </ul>
- <div class="wrapper"> <button id="close_button" class="btn btn-primary" style="font-size:120%;height:110%;"> Let's Begin! </button></div>
+ <div class="wrapper"> <button id="close_button" class="btn btn-primary" style="font-size:120%;height:110%; margin-top:3%; margin-left: 3%"> Let's Begin! </button></div>
     </div>
     <div class="modal-footer" style="background-color:#00bcd4">
       <h3>CODERELAY</h3>
@@ -311,7 +316,7 @@ including teammates in any form.
       </div>
       <div id="outputLabel" class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
         <h4>
-          <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Output <small id="emptyIndicator">empty</small>
+          <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Output
 
           <small class="pull-right" id="statusLine"></small>
     
@@ -321,7 +326,7 @@ including teammates in any form.
 
     <div class="row ioEditors">
       <div id="inputEditor" class="col-xs-6 col-sm-6 col-md-6 col-lg-6"></div>
-      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6"><textarea id="output" rows="20" name="comment[text]" id="comment_text" cols="40" class="ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true" style="border-radius: 0; width: 100%; min-height: 20%"></textarea></div>
+      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6"><textarea id="output" rows="20" name="comment[text]" id="comment_text" cols="40" class="ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true" style="border-radius: 0; width: 100%; min-height: 20%" readonly></textarea></div>
     </div>
     <p id="abc"></p>
     </div>
