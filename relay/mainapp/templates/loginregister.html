@@ -4,7 +4,7 @@
 	<head>
 		<title>CODERELAY</title>
 		<link type='text/css' rel='stylesheet' href="{% static 'css/loginregister/loginregister.css' %}"/>
-		<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Montserrat"/>
+		<link rel="stylesheet" type="text/css" href="{% static 'css/montserrat.css' %}"/>
 		<script src="{% static 'js/loginregister/loginregister.js' %}"></script>
 		<script src="{% static 'js/jquery.min.js' %}"></script>
 
@@ -98,7 +98,7 @@ $(document).ready(function(){
     <input type="text" class="form-control" placeholder="Name" id="id_name">
   </div>
     <div class="logindata" id="logindata2">
-    <input type="text" class="form-control" placeholder="BITS ID" id="id_id">
+    <input type="text" class="form-control" placeholder="ID" id="id_id">
   </div>
     <div class="logindata" id="logindata3">
     <input type="text" class="form-control" placeholder="Team Name" id="id_teamname">
@@ -121,7 +121,7 @@ $(document).ready(function(){
 				<div id="login_errors" style="margin-left: 30%"></div>
 
      <div class="logindata" id="logindata2">
-    <input type="text" class="form-control" placeholder="BITS ID" id="id_id1">
+    <input type="text" class="form-control" placeholder="ID" id="id_id1">
   </div>
   <div class="logindata" id="logindata4">
     <input type="password" class="form-control" placeholder="Password" id="id_password">

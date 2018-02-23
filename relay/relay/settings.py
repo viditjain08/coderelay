@@ -25,7 +25,7 @@ SECRET_KEY = '*18t+3*48+%uzcgjmysz71d(_&tf-8u%3$n33h2twy9kt&k(rh'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', '192.168.43.185', '172.17.39.48']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -80,8 +80,12 @@ WSGI_APPLICATION = 'relay.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'coder',
+        'USER': 'coderuser',
+        'PASSWORD': 'coderuser12345',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
