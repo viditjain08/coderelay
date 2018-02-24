@@ -137,7 +137,7 @@ def ajaxlogin(request):
                             u1 = UserProfile.objects.get(user=user)
                             t = Team.objects.filter(Q(user1=u1) | Q(user2=u1))[0]
                             if t.time<time.mktime(datetime.now().timetuple()):
-                                t.time = time.mktime(datetime.now().timetuple())+randint(900,1200)
+                                t.time = time.mktime(datetime.now().timetuple())+randint(12*60,17*60)
                                 t.save()
                             success = True
                         except:

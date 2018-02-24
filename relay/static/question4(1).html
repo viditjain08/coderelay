@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style type="text/css">
+		h3{
+			color:red;
+		}
+		ul{
+			list-style: none;
+		}
+	</style>
+  <meta charset="UTF-8">
+ </head>
+ <body>
+ <p>The Burrows Wheeler transform is used in one of the most effective text compression methods. We
+explain the transform below by using, as an example, the input text BANANA.
+Step 1. Let t be the size of the input text (in our example t = 6). We obtain a matrix M with
+dimensions t × t. The first line of M corresponds to the input text. The i-th line, for i = 2, . . . , t,
+corresponds to a circular left shift of i − 1 positions with respect to the input text. For BANANA,
+we obtain the following matrix M:</p>
+<ul>
+<li>1 2 3 4 5 6
+<li>1 B A N A N A
+<li>3 N A N A B A
+<li>4 A N A B A N
+<li>5 N A B A N A
+<li>6 A B A N A N
+</ul>	
+<p>Step 2. We sort the lines of matrix M lexicographically to obtain a new matrix P. In our example,
+we get the following matrix P:</p>
+<ul>
+<li>1 2 3 4 5 6
+<li>1 A B A N A N
+<li>2 A N A B A N
+<li>3 A N A N A B
+<li>4 B A N A N A
+<li>5 N A B A N A
+<li>6 N A N A B A
+</ul>
+<p>
+Step 3. The Burrows Wheeler transform for BANANA is then given by the last column (i.e. column
+t) of matrix P and by the number of the row of P that corresponds to the input text. In our
+example, the last column of P is NNBAAA and the row of P which contains BANANA is the fourth
+one. Therefore, the Burrows Wheeler transform for BANANA is the pair (NNBAAA, 4).
+The goal of this problem is to implement the Inverse Burrows Wheeler transform. Given the last
+column of a matrix P and the number of the row of P which contains the input text, your program
+should obtain the input text.</p>
+</pre>
+<h3>Input</h3>
+<p>
+The input file may contain several instances of the problem, occurring consecutively in the input file,
+without any blank lines separating them. Each instance has two lines:
+1. The first line contains the entries in the last column of matrix P, starting from the first row.
+Each entry is an uppercase letter, NOT separated by any blank spaces from its neighbour entries.
+2. The second line contains the integer number corresponding to the row of P which contains the
+input text.
+The last instance of the input file consists of the two lines
+END
+0
+You may assume that the input text of each instance contains at most 300 letters
+</p>
+<h3>Output</h3>
+<p>For each instance of the problem, your program should print the input text as consecutive letters in a
+single line. The output of each instance is separated from the next by a blank line.</p>
+<h3>Sample Input</h3>
+<ul style="list-style: none;">
+<li>NNBAAA
+<li><li>4
+<li>OMOEULCG
+<li>1
+<li>END
+<li>0
+</ul>
+<h3>Sample Output</h3>
+<ul style="list-style: none;">
+<li>BANANA
+<li>COGUMELO
+</ul>
+</body>
+</html>

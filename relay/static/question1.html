@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style type="text/css">
+
+		h3{
+			color:red;
+		}
+		ul{
+			list-style: none;
+		}
+	</style>
+  <meta charset="UTF-8">
+ </head>
+ <body>
+ 	<p>Given a string of 0’s and 1’s up to 1000000 characters long and indices i and j, you are to answer
+a question whether all characters between position min(i, j) and position max(i, j) (inclusive) are the
+same.</p>
+<h3>Input</h3>
+<p>There are multiple cases on input. The first line of each case gives a string of 0’s and 1’s. The next
+line contains a positive integer n giving the number of queries for this case. The next n lines contain
+queries, one per line. Each query is given by two non-negative integers, i and j. For each query, you
+are to print ‘Yes’ if all characters in the string between position min(i, j) and position max(i, j) are the
+same, and ‘No’ otherwise.</p>
+<h3>Output</h3>
+<p>Each case on output should start with a heading as in the sample below. The input ends with an empty
+string that is a line containing only the new line character, this string should not be processed. The
+input may also with end of file. So keep check for both.</p>
+<h3>Sample Input</h3>
+<ul>
+<li>0000011111
+<li>3
+<li>0 5
+<li>4 2
+<li>5 9
+<li>01010101010101010101010101111111111111111111111111111111111110000000000000000
+<li>5
+<li>4 4
+<li>25 60
+<li>1 3
+<li>62 76
+<li>1
+<li>1
+<li>0 0
+</ul>
+<h3>Sample Input</h3>
+<ul style="list-style: none;">
+<li>Case 1:
+<li>No
+<li>Yes
+<li>Case 2:
+<li>Yes
+<li>Yes
+<li>No
+<li>Yes
+<li>No
+<li>Case 3:
+<li>Yes
+</ul>
+ </body>
+</html>
