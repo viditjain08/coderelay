@@ -137,7 +137,7 @@ def ajaxlogin(request):
                             u1 = UserProfile.objects.get(user=user)
                             t = Team.objects.filter(Q(user1=u1) | Q(user2=u1))[0]
                             if t.time<time.mktime(datetime.now().timetuple()):
-                                t.time = time.mktime(datetime.now().timetuple())+randint(90,120)
+                                t.time = time.mktime(datetime.now().timetuple())+randint(900,1200)
                                 t.save()
                             success = True
                         except:
@@ -245,7 +245,7 @@ def swapcode(request):
             except:
                pass
         (t.user1q, t.user2q) = (t.user2q, t.user1q)
-        t.time = time.mktime(datetime.now().timetuple())+randint(90,120)
+        t.time = time.mktime(datetime.now().timetuple())+randint(900,1200)
         t.swap=True
         t.save()
         c1.save()
