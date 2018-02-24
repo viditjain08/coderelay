@@ -47,7 +47,7 @@
 .modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
+    z-index: 100; /* Sit on top */
     left: 0;
     top: 0;
     width: 100%; /* Full width */
@@ -58,10 +58,8 @@
     -webkit-animation-name: fadeIn; /* Fade in the background */
     -webkit-animation-duration: 0.4s;
     animation-name: fadeIn;
-    animation-duration: 0.4s;
-  z-index:5000;
+    animation-duration: 0.4s
 }
-
 /* Modal Content */
 .modal-content {
     position: fixed;
@@ -71,8 +69,8 @@
     -webkit-animation-name: slideIn;
     -webkit-animation-duration: 0.4s;
     animation-name: slideIn;
+    max-height: 80%;
     animation-duration: 0.4s;
-    height: 80%;
 }
 
 /* The Close Button */
@@ -89,9 +87,7 @@
     text-decoration: none;
     cursor: pointer;
 }
-.modal-dialog {
-    height: 80%;
-}
+
 .modal-header {
     padding: 2px 16px;
     background-color: #5cb85c;
@@ -99,8 +95,8 @@
 }
 
 .modal-body {padding: 2px 16px;
-    max-height: calc(100% - 120px);
     overflow-y: scroll;
+        max-height: calc(100% - 120px);
 }
 
 .modal-footer {
@@ -194,7 +190,7 @@ function myTimer() {
 <div id="myModal" class="modal">
 
   <!-- Modal content -->
-  <div class="modal-content">
+  <div class="modal-content" style="height:90%">
     <div class="modal-header">
       <span class="close">&times;</span>
       <h2 id="qhead">{{code.question.heading}}</h2>
@@ -223,28 +219,20 @@ function myTimer() {
    <li>The duration of the event is two hours.
 <li> Participants are not allowed to communicate with any other participant
 including teammates in any form.
- <li>The allowed languages are C, C++, Java and Python.
- <li>Team members are to use the same language.
- <li>Any form of malpractice will lead to disqualification.
- <li>The decision of the authorities will be final and binding
-   <li>The duration of the event is two hours.
-<li> Participants are not allowed to communicate with any other participant
-including teammates in any form.
- <li>The allowed languages are C, C++, Java and Python.
- <li>Team members are to use the same language.
- <li>Any form of malpractice will lead to disqualification.
- <li>The decision of the authorities will be final and binding
-   <li>The duration of the event is two hours.
-<li> Participants are not allowed to communicate with any other participant
-including teammates in any form.
- <li>The allowed languages are C, C++, Java and Python.
- <li>Team members are to use the same language.
- <li>Any form of malpractice will lead to disqualification.
- <li>The decision of the authorities will be final and binding
-   <li>The duration of the event is two hours.
-    <li>Any form of malpractice will lead to disqualification.
- </ul>
- <div class="wrapper"> <button id="close_button" class="btn btn-primary" style="font-size:120%;height:110%; margin-top:3%; margin-left: 3%"> Let's Begin! </button></div>
+<li>The allowed languages are C, C++, Java and Python.
+<li>Team members are to use the same language.
+<li>Any form of malpractice will lead to disqualification.
+<li>The team will be disqualified if any person of the team tries to escape the full screen, or change the game screen for writing their code on a separate application.
+</ul>
+<h2 style="text-align:center">Details</h2>
+<ul>
+	<li>CodeRelay consists of total 4 competitive programming questions.
+	<li>Every team has exactly 2 members whose codes will be swapped after around 15 minutes.
+	<li>The Timer will be displayed when 2 minutes are left for the codes to swap.
+	<li>The team which solves all the questions wins.
+</ul>
+
+ <div class="wrapper"> <button id="close_button" class="btn btn-primary" style="font-size:120%;height:110%; margin-left: 3%"> Let's Begin! </button></div>
     </div>
     <div class="modal-footer" style="background-color:#00bcd4">
       <h3>CODERELAY</h3>
